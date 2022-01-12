@@ -1,8 +1,6 @@
 import 'package:anotacoes/helper/database.dart';
 import 'package:anotacoes/model/model-anotacao.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 
 class Home extends StatefulWidget {
@@ -15,58 +13,60 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   //
-  TextEditingController _tituloController = TextEditingController();
-  TextEditingController _descricaoController = TextEditingController();
+  final TextEditingController _tituloController = TextEditingController();
+  final TextEditingController _descricaoController = TextEditingController();
   var _db = DatabaseHelper();
 
   _exibirTelaCadastro(){
-    showCupertinoDialog(context: context, builder: (context){
-
-      return CupertinoAlertDialog(
-        title: Text('Nova Anotação'),
-        content: Card(
-          child: Column(
-            children: [
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: const Text("Adicionar anotação"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
               TextField(
                 controller: _tituloController,
-                decoration: InputDecoration(
-                  labelText: 'Tarefa',
-                  hintText: 'Digite uma TAREFA',
-                  filled: true,
-
+                autofocus: true,
+                decoration: const InputDecoration(
+                    labelText: "Título",
+                    hintText: "Digite título..."
                 ),
               ),
               TextField(
                 controller: _descricaoController,
-                decoration: InputDecoration(
-                  labelText: 'Descrição',
-                  hintText: 'Digite uma DESCRIÇÃO',
-                  filled: true,
+                decoration: const InputDecoration(
+                    labelText: "Descrição",
+                    hintText: "Digite descrição..."
                 ),
               )
             ],
           ),
-        ),
-      actions: [
-        CupertinoDialogAction(child: Text('Cancelar'),onPressed: () => Navigator.pop(context),),
-        CupertinoDialogAction(
-            child: Text('Salvar'),
-            onPressed:(){
+          actions: <Widget>[
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancelar")
+            ),
+            TextButton(
+                onPressed: (){
 
-          _salvarAnotacao();
-          Navigator.pop(context);
-        })
+                  //salvar
+                  _salvarAnotacao;
+
+                  Navigator.pop(context);
+                },
+                child: const Text("Salvar")
+            )
           ],
         );
       }
-    );
+  );
 
   }
 
 
   _recuperarAnotacoes(){
-
-
 
   }
 
@@ -74,9 +74,12 @@ class _HomeState extends State<Home> {
 
     String titulo = _tituloController.text;
     String descricao = _descricaoController.text;
-    modelAnotacao anotacao = modelAnotacao(titulo, descricao, DateTime.now().toString());
+    modelAnotacao anotacao = modelAnotacao(
+        titulo,
+        descricao,
+        DateTime.now().toString());
 
-    int resultado = await _db.salvarAnotacao(anotacao);
+    // int resultado = await _db.salvarAnotacao(anotacao);
 
   }
 
@@ -84,46 +87,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Anotações'),
+        title: const Text('Anotações'),
       ),
       body: Container(),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: (){
-          _exibirTelaCadastro();
+          _exibirTelaCadastro;
         },
       ),
     );
   }
 }
-
-
-
-// title: Text('Nova Anotação'),
-// content: Column(
-//   children: [
-//     TextField(
-//       controller: _tituloController,
-//       autofocus: true,
-//       decoration: InputDecoration(
-//           labelText: 'Título',
-//           hintText: 'Digite um título'
-//       ),
-//     ),
-//     TextField(
-//       controller: _descricaoController,
-//       decoration: InputDecoration(
-//           labelText: 'Descrição',
-//           hintText: 'Digite uma descrição'
-//       ),
-//          )
-//       ],
-//     ),
-//   actions: [
-//     TextButton(onPressed: () => Navigator.pop(context),
-//         child: Text('Cancelar')
-//       ),
-//     TextButton(onPressed: () => Navigator.pop(context),
-//         child: Text('Salvar')
-//     )
-//     ],

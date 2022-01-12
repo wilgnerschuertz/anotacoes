@@ -2,9 +2,12 @@ import 'package:anotacoes/model/model-anotacao.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+
 class DatabaseHelper {
 
-  static final String nameTable = 'anotacao';
+  // modelAnotacao modelanotacao = new modelAnotacao('', '', '');
+
+  static const String nameTable = 'anotacao';
   static final DatabaseHelper _databaseHelper = DatabaseHelper();
   late Database _bancodados;
 
@@ -14,7 +17,7 @@ class DatabaseHelper {
 
 
   get bancodados async {
-    if (_bancodados != null){
+    if (null != _bancodados){
       return _bancodados;
     }else{
       _bancodados = await startBanco();
@@ -42,6 +45,7 @@ class DatabaseHelper {
     var db = await openDatabase(localBancoDados, version: 1, onCreate: _onCreate);
     return db;
   }
+
 
   Future<int>salvarAnotacao(modelAnotacao modelAnotacao) async {
 
