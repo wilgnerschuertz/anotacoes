@@ -1,7 +1,8 @@
-import 'package:anotacoes/helper/anotacao-helper.dart';
-import 'package:anotacoes/model/anotacao.dart';
+import 'package:anotacoes/helper/database.dart';
+import 'package:anotacoes/model/model-anotacao.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 
 class Home extends StatefulWidget {
@@ -16,7 +17,7 @@ class _HomeState extends State<Home> {
   //
   TextEditingController _tituloController = TextEditingController();
   TextEditingController _descricaoController = TextEditingController();
-  var _db = AnotacaoHelper();
+  var _db = DatabaseHelper();
 
   _exibirTelaCadastro(){
     showCupertinoDialog(context: context, builder: (context){
@@ -62,11 +63,18 @@ class _HomeState extends State<Home> {
 
   }
 
+
+  _recuperarAnotacoes(){
+
+
+
+  }
+
   _salvarAnotacao() async {
 
     String titulo = _tituloController.text;
     String descricao = _descricaoController.text;
-    Anotacao anotacao = Anotacao(titulo, descricao, DateTime.now().toString());
+    modelAnotacao anotacao = modelAnotacao(titulo, descricao, DateTime.now().toString());
 
     int resultado = await _db.salvarAnotacao(anotacao);
 
