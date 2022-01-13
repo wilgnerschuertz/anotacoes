@@ -1,12 +1,20 @@
-
 class modelAnotacao{
 
   int? id;
-  String titulo;
-  String descricao;
-  String data;
+  String titulo = '';
+  String? descricao;
+  String? data;
 
   modelAnotacao(this.titulo, this.descricao, this.data);
+
+  modelAnotacao.fromMap(Map map){
+
+    this.id = map["id"];
+    this.titulo = map["titulo"];
+    this.descricao = map["descricao"];
+    this.data = map["data"];
+
+  }
 
   Map toMap(){
 
